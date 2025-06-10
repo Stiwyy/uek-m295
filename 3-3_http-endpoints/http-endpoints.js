@@ -51,6 +51,15 @@ app.get('/xml', (req, res) => {
     res.send('<message>Hello, this is an XML response!</message>');
 });
 
+app.get('/me', (req, res) => {
+    res.json({
+        name: "Andrin Renggli",
+        age: 17,
+        Wohnort: "Truttikon",
+        Augenfarbe: "Grün"
+    });
+})
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
