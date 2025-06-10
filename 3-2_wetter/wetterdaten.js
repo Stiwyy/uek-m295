@@ -5,7 +5,7 @@ const port = 3000;
 
 app.get('/temperature/:plz', async (req, res) => {
     const plz = req.params.plz;
-    const url = `https://app-prod-ws.meteoswiss-app.ch/v1/plzDetail?plz=${plz}`;
+    const url = `https://app-prod-ws.meteoswiss-app.ch/v1/plzDetail?plz=${plz}00`;
 
     try {
         const response = await fetch(url);
