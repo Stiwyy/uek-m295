@@ -42,6 +42,10 @@ app.get('/user-agent', (req, res) => {
     res.send(`Your User-Agent is: ${userAgent}`);
 });
 
+app.get('/secret', (req, res) => {
+    res.status(403).send("Access forbidden: You are not allowed to access this resource.");
+})
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
