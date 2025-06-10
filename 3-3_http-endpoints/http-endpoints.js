@@ -26,6 +26,17 @@ app.get('/html', (req, res) => {
     })
 })
 
+app.get('/image', (req, res) => {
+    fs.readFile('image.png', function(err, image){
+        res.writeHead(200, {'Content-Type': 'image/png'});
+        res.end(image);
+    })
+})
+
+app.get('/teapot', (req, res) => {
+    res.status(418).send("I'm a teapot");
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
