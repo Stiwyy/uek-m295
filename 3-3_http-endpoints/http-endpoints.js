@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'node:fs';
 
 const app = express();
 const port = 3000;
@@ -18,6 +19,13 @@ app.get('/name', (req, res) => {
     const randomName = names[Math.floor(Math.random() * names.length)];
     res.send(`Zufälliger Name: ${randomName}`);
 })
+
+app.get('/html', (req, res) => {
+    fs.readFile('test.html', 'utf8', function(err, text){
+        res.send(text);
+    })
+})
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
