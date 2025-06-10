@@ -37,6 +37,11 @@ app.get('/teapot', (req, res) => {
     res.status(418).send("I'm a teapot");
 });
 
+app.get('/user-agent', (req, res) => {
+    const userAgent = req.headers['user-agent'];
+    res.send(`Your User-Agent is: ${userAgent}`);
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
