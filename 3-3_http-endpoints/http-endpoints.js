@@ -46,6 +46,11 @@ app.get('/secret', (req, res) => {
     res.status(403).send("Access forbidden: You are not allowed to access this resource.");
 })
 
+app.get('/xml', (req, res) => {
+    res.set('Content-Type', 'application/xml');
+    res.send('<message>Hello, this is an XML response!</message>');
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
