@@ -16,7 +16,7 @@ app.get('/zli', (req, res) => {
 app.get('/name', (req, res) => {
     const names =["Max", "Moritz", "Anna", "Lena", "Paul", "Laura", "Tim", "Sophie", "Ben", "Lisa",
         "Jonas", "Emma", "Leon", "Mia", "Lukas", "Nina", "Felix", "Sarah", "Tom", "Julia"];
-    const randomName = names[Math.floor(Math.random() * names.length)];
+    const randomName = names[Math.floor(Math.random() * names.length - 1)];
     res.send(`Zufälliger Name: ${randomName}`);
 })
 
