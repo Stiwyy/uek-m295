@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs';
+
 function leseDateiInhalt(dateiPfad) {
   return new Promise((resolve, reject) => {
     readFile(dateiPfad, 'utf8', (err, data) => {
