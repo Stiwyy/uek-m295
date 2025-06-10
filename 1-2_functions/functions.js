@@ -8,8 +8,14 @@ const addiere1 = (a, b) => {
     return a + b;
 };
 
-const addiere2 = (a, b) => a + b;
+// Even though this is a function expression, it can be called before it is defined
+const addiere2 = function(a, b) {
+    return a + b;
+};
+
+const addiere3 = (a, b) => a + b;
 
 console.log(addiere(1, 2));
 console.log(addiere1(1, 2));
 console.log(addiere2(1, 2));
+console.log(addiere3(1, 2));
