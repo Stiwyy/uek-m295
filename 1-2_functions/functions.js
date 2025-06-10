@@ -1,6 +1,9 @@
+// Functions get put at the top of the file
 function addiere(a, b) {
     return a + b;
 }
+
+// A function that is declared like this can't be called before it is defined
 const addiere1 = (a, b) => {
     return a + b;
 };
