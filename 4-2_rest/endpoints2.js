@@ -9,7 +9,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 let names = [];
 
-app.get('/time', (req, res) => {
+// https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for valid time zones
+app.get('/now', (req, res) => {
     const tz = req.query.tz || 'UTC';
     try {
         const now = new Date().toLocaleString('sv-SE', { timeZone: tz });
