@@ -9,7 +9,7 @@ app.get('/books', (req, res) => {
     res.json(books)
 })
 
-app.get('book/:isbn', (req, res) => {
+app.get('books/:isbn', (req, res) => {
     const book = books.find(b => b.isbn === req.params.isbn)
     if (!book) {
         return res.status(404).json({ error: 'Book not found' })
@@ -26,7 +26,7 @@ app.post('/books', (req, res) => {
     res.status(201).json(newBook)
 })
 
-app.put('book/:isbn', (req, res) => {
+app.put('books/:isbn', (req, res) => {
     const idx = books.findIndex(b => b.isbn === req.params.isbn)
     if (idx === -1) {
         return res.status(404).json({ error: 'Book not found' })
@@ -35,7 +35,7 @@ app.put('book/:isbn', (req, res) => {
     res.json(req.body)
 })
 
-app.delete('book/:isbn', (req, res) => {
+app.delete('books/:isbn', (req, res) => {
     const idx = books.findIndex(b => b.isbn === req.params.isbn)
     if (idx === -1) {
         return res.status(404).json({ error: 'Book not found' })
