@@ -2,7 +2,13 @@ import express from 'express';
 const app = express()
 app.use(express.json())
 
-const books = []
+const books = [
+    { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', isbn: '9780743273565' },
+    { title: '1984', author: 'George Orwell', isbn: '9780451524935' },
+    { title: 'To Kill a Mockingbird', author: 'Harper Lee', isbn: '9780061120084' },
+    { title: 'Moby Dick', author: 'Herman Melville', isbn: '9781503280786' },
+    { title: 'Pride and Prejudice', author: 'Jane Austen', isbn: '9781503290563' }
+]
 const port =  3000
 
 app.get('/books', (req, res) => {
@@ -26,21 +32,21 @@ app.post('/books', (req, res) => {
     res.status(201).json(newBook)
 })
 
-app.put('books/:isbn', (req, res) => {
-    const idx = books.findIndex(b => b.isbn === req.params.isbn)
-    if (idx === -1) {
+app.put('/books/:isbn', (req, res) => {
+    const book = books.find(b => b.isbn === req.params.isbn)
+    if (!book) {
         return res.status(404).json({ error: 'Book not found' })
     }
-    books[idx] = req.body
-    res.json(req.body)
+    Object.assign(book, req.body)
+    res.json(book)
 })
 
-app.delete('books/:isbn', (req, res) => {
-    const idx = books.findIndex(b => b.isbn === req.params.isbn)
-    if (idx === -1) {
+app.delete('/books/:isbn', (req, res) => {
+    const book = books.find(b => b.isbn === req.params.isbn)
+    if (!book) {
         return res.status(404).json({ error: 'Book not found' })
     }
-    books.splice(idx, 1)
+    books.splice(books.indexOf(book), 1)
     res.sendStatus(204)
 })
 
