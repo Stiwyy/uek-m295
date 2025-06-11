@@ -1,4 +1,5 @@
 import express from 'express';
+import { randomUUID } from 'node:crypto';
 const app = express()
 app.use(express.json())
 
@@ -77,7 +78,82 @@ app.patch('/books/:isbn', (req, res) => {
 app.listen(port, () => {
     console.log(`Bibliothek-API läuft auf http://localhost:${port}`)
 })
+const lends = [
+    {
+        id: '550e8400-e29b-41d4-a716-446655440001',
+        customer_id: 'cust_001',
+        isbn: '9780743273565',
+        borrowed_at: '2024-01-15T10:30:00.000Z',
+        returned_at: null
+    },
+    {
+        id: '550e8400-e29b-41d4-a716-446655440002',
+        customer_id: 'cust_002',
+        isbn: '9780451524935',
+        borrowed_at: '2024-01-10T14:15:00.000Z',
+        returned_at: '2024-01-20T09:45:00.000Z'
+    },
+    {
+        id: '550e8400-e29b-41d4-a716-446655440003',
+        customer_id: 'cust_003',
+        isbn: '9780061120084',
+        borrowed_at: '2024-01-18T16:20:00.000Z',
+        returned_at: null
+    }
+];
 
+app.get('/lends', (req, res) => {
+    res.json(lends);
+});
+
+app.get('/lends/:id', (req, res) => {
+    const lend = lends.find(l => l.id === req.params.id);
+    if (!lend) {
+        return res.status(404).json({ error: 'Lend not found' });
+    }
+    res.json(lend);
+});
+
+app.post('/lends', (req, res) => {
+    if (!req.body.customer_id || !req.body.isbn) {
+        return res.status(422).json({ error: 'customer_id and isbn are required' });
+    }
+    
+    const book = books.find(b => b.isbn === req.body.isbn);
+    if (!book) {
+        return res.status(404).json({ error: 'Book not found' });
+    }
+    
+    const existingLend = lends.find(l => l.isbn === req.body.isbn && !l.returned_at);
+    if (existingLend) {
+        return res.status(409).json({ error: 'Book is already lent out' });
+    }
+    
+    const newLend = {
+        id: randomUUID(),
+        customer_id: req.body.customer_id,
+        isbn: req.body.isbn,
+        borrowed_at: new Date().toISOString(),
+        returned_at: null
+    };
+    
+    lends.push(newLend);
+    res.status(201).json(newLend);
+});
+
+app.delete('/lends/:id', (req, res) => {
+    const lend = lends.find(l => l.id === req.params.id);
+    if (!lend) {
+        return res.status(404).json({ error: 'Lend not found' });
+    }
+    
+    if (lend.returned_at) {
+        return res.status(409).json({ error: 'Book already returned' });
+    }
+    
+    lend.returned_at = new Date().toISOString();
+    res.sendStatus(204);
+});
 
 
 
