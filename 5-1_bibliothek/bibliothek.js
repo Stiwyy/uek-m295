@@ -5,11 +5,11 @@ app.use(express.json())
 const books = []
 const port =  3000
 
-app.get('/', (req, res) => {
+app.get('/books', (req, res) => {
     res.json(books)
 })
 
-app.get('/:isbn', (req, res) => {
+app.get('book/:isbn', (req, res) => {
     const book = books.find(b => b.isbn === req.params.isbn)
     if (!book) {
         return res.status(404).json({ error: 'Book not found' })
@@ -17,7 +17,7 @@ app.get('/:isbn', (req, res) => {
     res.json(book)
 })
 
-app.post('/', (req, res) => {
+app.post('/books', (req, res) => {
     const newBook = req.body
     if (books.some(b => b.isbn === newBook.isbn)) {
         return res.status(409).json({ error: 'ISBN already exists' })
@@ -26,7 +26,7 @@ app.post('/', (req, res) => {
     res.status(201).json(newBook)
 })
 
-app.put('/:isbn', (req, res) => {
+app.put('book/:isbn', (req, res) => {
     const idx = books.findIndex(b => b.isbn === req.params.isbn)
     if (idx === -1) {
         return res.status(404).json({ error: 'Book not found' })
@@ -35,7 +35,7 @@ app.put('/:isbn', (req, res) => {
     res.json(req.body)
 })
 
-app.delete('/:isbn', (req, res) => {
+app.delete('book/:isbn', (req, res) => {
     const idx = books.findIndex(b => b.isbn === req.params.isbn)
     if (idx === -1) {
         return res.status(404).json({ error: 'Book not found' })
