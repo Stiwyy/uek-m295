@@ -15,7 +15,7 @@ app.get('/books', (req, res) => {
     res.json(books)
 })
 
-app.get('books/:isbn', (req, res) => {
+app.get('/books/:isbn', (req, res) => {
     const book = books.find(b => b.isbn === req.params.isbn)
     if (!book) {
         return res.status(404).json({ error: 'Book not found' })
