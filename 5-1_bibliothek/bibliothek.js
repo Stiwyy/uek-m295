@@ -27,6 +27,9 @@ app.post('/books', (req, res) => {
     if (!req.body.title || !req.body.author || !req.body.isbn) {
         res.sendStatus(422)
     }
+    if (books.find(b => b.isbn === isbn)) {
+        return res.status(409).json({ error: 'ISBN must be unique' })
+    }
     const newBook = req.body
     books.push(newBook)
     res.status(201).json(newBook)
@@ -40,7 +43,9 @@ app.put('/books/:isbn', (req, res) => {
     if (!req.body.title || !req.body.author || !req.body.isbn) {
         res.sendStatus(422)
     }
-    
+    if (books.find(b => b.isbn === isbn)) {
+        return res.status(409).json({ error: 'ISBN must be unique' })
+    }
     Object.assign(book, req.body)
     res.json(book)
 })
@@ -58,6 +63,9 @@ app.patch('/books/:isbn', (req, res) => {
     const book = books.find(b => b.isbn === req.params.isbn)
     if (!book) {
         return res.status(404).json({ error: 'Book not found' })
+    }
+    if (books.find(b => b.isbn === isbn)) {
+        return res.status(409).json({ error: 'ISBN must be unique' })
     }
     const update = req.body
     if (update.title) book.title = update.title
