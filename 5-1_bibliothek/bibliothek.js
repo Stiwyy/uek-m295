@@ -25,9 +25,6 @@ app.get('/books/:isbn', (req, res) => {
 
 app.post('/books', (req, res) => {
     const newBook = req.body
-    if (books.some(b => b.isbn === newBook.isbn)) {
-        return res.status(409).json({ error: 'ISBN already exists' })
-    }
     books.push(newBook)
     res.status(201).json(newBook)
 })
