@@ -24,6 +24,9 @@ app.get('/books/:isbn', (req, res) => {
 })
 
 app.post('/books', (req, res) => {
+    if (!req.body.title || !req.body.author || !req.body.isbn) {
+        res.sendStatus(422)
+    }
     const newBook = req.body
     books.push(newBook)
     res.status(201).json(newBook)
@@ -34,6 +37,10 @@ app.put('/books/:isbn', (req, res) => {
     if (!book) {
         return res.status(404).json({ error: 'Book not found' })
     }
+    if (!req.body.title || !req.body.author || !req.body.isbn) {
+        res.sendStatus(422)
+    }
+    
     Object.assign(book, req.body)
     res.json(book)
 })
@@ -45,6 +52,18 @@ app.delete('/books/:isbn', (req, res) => {
     }
     books.splice(books.indexOf(book), 1)
     res.sendStatus(204)
+})
+
+app.patch('/books/:isbn', (req, res) => {
+    const book = books.find(b => b.isbn === req.params.isbn)
+    if (!book) {
+        return res.status(404).json({ error: 'Book not found' })
+    }
+    const update = req.body
+    if (update.title) book.title = update.title
+    if (update.author) book.author = update.author
+    if (update.isbn) book.isbn = update.isbn
+    res.json(book)
 })
 
 app.listen(port, () => {
