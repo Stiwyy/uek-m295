@@ -1,8 +1,11 @@
 import express from 'express';
 import { randomUUID } from 'node:crypto';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json' assert { type: 'json' };
 const app = express();
 
 app.use(express.json());
+app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 let books = [
 	{
