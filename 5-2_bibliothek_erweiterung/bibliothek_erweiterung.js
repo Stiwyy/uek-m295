@@ -115,8 +115,8 @@ app.get('/lends/:id', (req, res) => {
 });
 
 app.post('/lends', (req, res) => {
-    if (!req.body.customer_id || !req.body.isbn) {
-        return res.status(422).send("customer_id and isbn are required");
+    if (!req.body.customer_id || !req.body.isbn || !req.body.borrowed_at) {
+        return res.status(422).send("customer_id, isbn and borrowed_at are required");
     }
     
     const book = books.find(b => b.isbn === req.body.isbn);
