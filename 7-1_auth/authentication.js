@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-const port = 3000;
+const port = 3001;
 app.use(express.json());
 
 app.get('/public', (req, res) => {
@@ -13,11 +13,9 @@ app.get('/private', (req, res) => {
 		res.setHeader('WWW-Authenticate', 'Basic realm="staging server"');
 		return res.status(401).send('Nicht autorisiert');
 	}
-	const base64Credentials = auth.split(' ')[1];
-	const credentials = Buffer.from(base64Credentials, 'base64').toString(
-		'ascii'
-	);
-	const [username, password] = credentials.split(':');
+	const [username, password] = Buffer.from(auth.split(' ')[1], 'base64')
+		.toString('ascii')
+		.split(':');
 	if (username === 'zli' && password === 'zli1234') {
 		return res.status(200).send('Privater Endpunkt');
 	} else {
