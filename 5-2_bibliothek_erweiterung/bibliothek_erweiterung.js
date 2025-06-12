@@ -4,7 +4,7 @@ const app = express()
 
 app.use(express.json())
 
-const books = [
+let books = [
     { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', isbn: '9780743273565' },
     { title: '1984', author: 'George Orwell', isbn: '9780451524935' },
     { title: 'To Kill a Mockingbird', author: 'Harper Lee', isbn: '9780061120084' },
@@ -37,7 +37,11 @@ app.post('/books', (req, res) => {
         return res.status(409).json({ error: 'ISBN must be unique' })
     }
     const newBook = req.body
-    books.push(newBook)
+
+    //Sollte nicht push verwenden, sondern die ... Spread-Syntax
+    
+    // books.push(newBook)
+    books = [...books, newBook]
     res.status(201).json(newBook)
 })
 
@@ -83,7 +87,7 @@ app.patch('/books/:isbn', (req, res) => {
 app.listen(port, () => {
     console.log(`Bibliothek-API läuft auf http://localhost:${port}`)
 })
-const lends = [
+let lends = [
     {
         id: '550e8400-e29b-41d4-a716-446655440001',
         customer_id: 'cust_001',
@@ -146,7 +150,9 @@ app.post('/lends', (req, res) => {
         returned_at: null
     };
     
-    lends.push(newLend);
+    //Sollte nicht push verwenden, sondern die ... Spread-Syntax
+    lends = [...lends, newLend]; 
+    //lends.push(newLend);
     res.status(201).json(newLend);
 });
 
