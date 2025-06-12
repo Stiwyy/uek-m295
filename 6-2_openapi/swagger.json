@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Bibliothek API",
-    "description": "Dokumentation der Bücher- und Ausleih-Endpunkte",
+    "description": "Dokumentation der Buch- und Ausleih-Endpunkte",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
@@ -10,11 +10,11 @@
   "tags": [
     {
       "name": "Book",
-      "description": "Alle Endpunkte für Bücher"
+      "description": "Buch-bezogene Operationen"
     },
     {
       "name": "Lend",
-      "description": "Alle Endpunkte für Ausleihen"
+      "description": "Ausleih-bezogene Operationen"
     }
   ],
   "schemes": [
