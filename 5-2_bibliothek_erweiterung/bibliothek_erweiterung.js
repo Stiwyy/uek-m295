@@ -175,19 +175,19 @@ app.post('/lends', (req, res) => {
 		return res.status(409).send('Book is already lent out');
 	}
 
-	const newLend = {
-		id: randomUUID(),
-		customer_id: req.body.customer_id,
-		isbn: req.body.isbn,
-		borrowed_at: new Date().toISOString(),
-		returned_at: null,
-	};
-
-	//Sollte nicht push verwenden, sondern die ... Spread-Syntax
-	lends = [...lends, newLend];
-	//lends.push(newLend);
-	res.status(201).json(newLend);
-});
+	//const newLend = {
+	//	id: randomUUID(),
+	//	customer_id: req.body.customer_id,
+	//	isbn: req.body.isbn,
+	//	borrowed_at: new Date().toISOString(),
+	//	returned_at: null,
+	//};
+	//
+	////Sollte nicht push verwenden, sondern die ... Spread-Syntax
+	//lends = [...lends, newLend];
+	////lends.push(newLend);
+	//res.status(201).json(newLend);
+}); //
 
 app.delete('/lends/:id', (req, res) => {
 	const lend = lends.find((l) => l.id === req.params.id);
@@ -198,7 +198,6 @@ app.delete('/lends/:id', (req, res) => {
 	if (lend.returned_at) {
 		return res.status(409).send('Book already returned');
 	}
-
 	lend.returned_at = new Date().toISOString();
 	res.sendStatus(204);
 });
