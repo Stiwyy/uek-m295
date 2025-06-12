@@ -8,7 +8,11 @@ const books = [
     { title: '1984', author: 'George Orwell', isbn: '9780451524935' },
     { title: 'To Kill a Mockingbird', author: 'Harper Lee', isbn: '9780061120084' },
     { title: 'Moby Dick', author: 'Herman Melville', isbn: '9781503280786' },
-    { title: 'Pride and Prejudice', author: 'Jane Austen', isbn: '9781503290563' }
+    { title: 'Pride and Prejudice', author: 'Jane Austen', isbn: '9781503290563' },
+    { title: 'kfdjd', author: 'sdfkjdsfj', isbn: '1234'},
+    { title: 'kfdjd', author: 'sdfkjdsfj', isbn: '12345'},
+    { title: 'kfdjd', author: 'sdfkjdsfj', isbn: '123456'},
+
 ]
 const port =  3000
 
@@ -118,7 +122,8 @@ app.post('/lends', (req, res) => {
     if (!req.body.customer_id || !req.body.isbn || !req.body.borrowed_at) {
         return res.status(422).send("customer_id, isbn and borrowed_at are required");
     }
-    if (lends.find(l => l.borrowed_at).size >= 3){
+    if (lends.filter(
+    l => l.customer_id === req.body.customer_id && l.returned_at === null).length >= 3) {
         return res.status(429).send("Maximum number of lends reached for this customer");
     }
     
