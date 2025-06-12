@@ -118,6 +118,9 @@ app.post('/lends', (req, res) => {
     if (!req.body.customer_id || !req.body.isbn || !req.body.borrowed_at) {
         return res.status(422).send("customer_id, isbn and borrowed_at are required");
     }
+    if (lends.find(l => l.borrowed_at).size >= 3){
+        return res.status(429).send("Maximum number of lends reached for this customer");
+    }
     
     const book = books.find(b => b.isbn === req.body.isbn);
     if (!book) {
