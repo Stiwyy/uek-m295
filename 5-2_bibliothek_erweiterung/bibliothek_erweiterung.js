@@ -84,18 +84,27 @@ app.delete('/books/:isbn', (req, res) => {
 });
 
 app.patch('/books/:isbn', (req, res) => {
-	const book = books.find((b) => b.isbn === req.params.isbn);
-	if (!book) {
+	const index = books.findIndex((b) => b.isbn === req.params.isbn);
+	if (index === -1) {
 		return res.status(404).json({ error: 'Book not found' });
 	}
-	if (books.find((b) => b.isbn === req.body.isbn)) {
+
+	if (
+		req.body.isbn &&
+		req.body.isbn !== req.params.isbn &&
+		books.find((b) => b.isbn === req.body.isbn)
+	) {
 		return res.status(409).json({ error: 'ISBN must be unique' });
 	}
-	const update = req.body;
-	if (update.title) book.title = update.title;
-	if (update.author) book.author = update.author;
-	if (update.isbn) book.isbn = update.isbn;
-	res.json(book);
+
+	const updatedBook = {
+		...books[index],
+		...req.body,
+	};
+
+	books = books.map((b, i) => (i === index ? updatedBook : b));
+
+	res.json(updatedBook);
 });
 
 app.listen(port, () => {
