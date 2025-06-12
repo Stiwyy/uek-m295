@@ -65,16 +65,18 @@ app.put('/books/:isbn', (req, res) => {
 		return res.status(404).json({ error: 'Book not found' });
 	}
 	if (!req.body.title || !req.body.author || !req.body.isbn) {
-		res.sendStatus(422);
+		return res.sendStatus(422);
 	}
-	if (books.find((b) => b.isbn === req.body.isbn)) {
+	if (
+		books.find(
+			(b) => b.isbn === req.body.isbn && b.isbn !== req.params.isbn
+		)
+	) {
 		return res.status(409).json({ error: 'ISBN must be unique' });
 	}
-	books = books.map((b) =>
-		b.isbn === req.params.isbn ? { ...req.body } : b
-	);
-	res.json(req.body);
-	res.json(book);
+	const updatedBook = { ...req.body };
+	books = books.map((b) => (b.isbn === req.params.isbn ? updatedBook : b));
+	res.json(updatedBook);
 });
 
 app.delete('/books/:isbn', (req, res) => {
