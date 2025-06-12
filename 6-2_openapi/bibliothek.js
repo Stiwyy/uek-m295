@@ -1,7 +1,8 @@
 import express from 'express';
 import { randomUUID } from 'node:crypto';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './swagger.json' assert { type: 'json' };
+import fs from 'node:fs';
+const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf-8'));
 const app = express();
 
 app.use(express.json());
