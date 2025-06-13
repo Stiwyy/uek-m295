@@ -201,3 +201,18 @@ app.delete('/lends/:id', (req, res) => {
 	lend.returned_at = new Date().toISOString();
 	res.sendStatus(204);
 });
+
+app.post('/login', (req, res) => {
+	if (!req.body.email || !req.body.password) {
+		return res.status(422).send('Username and password are required');
+	}
+
+	if (
+		req.body.email === 'desk@library.example' &&
+		req.body.password === 'm295'
+	) {
+		return res.status(200).json({ token: '1234567890abcdef' });
+	}
+
+	return res.status(401).send('Invalid credentials');
+});
