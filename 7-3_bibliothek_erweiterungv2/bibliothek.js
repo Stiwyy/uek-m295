@@ -241,3 +241,8 @@ app.get('/verify', (req, res) => {
 	}
 	return res.status(401).send('Unauthorized');
 });
+
+app.delete('/logout', (req, res) => {
+	auth = false;
+	res.sendStatus(204);
+});
