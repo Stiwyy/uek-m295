@@ -4,6 +4,7 @@ const app = express();
 
 app.use(express.json());
 
+let auth = false;
 let books = [
 	{
 		title: 'The Great Gatsby',
@@ -211,8 +212,9 @@ app.post('/login', (req, res) => {
 		req.body.email === 'desk@library.example' &&
 		req.body.password === 'm295'
 	) {
-		return res.status(200).json({ token: '1234567890abcdef' });
+		auth = true;
+		return res.sendStatus(201);
 	}
-
+	auth = false;
 	return res.status(401).send('Invalid credentials');
 });
