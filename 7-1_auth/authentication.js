@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-const port = 3001;
+const port = 3003;
 app.use(express.json());
 
 app.get('/public', (req, res) => {
@@ -13,6 +13,7 @@ app.get('/private', (req, res) => {
 		res.setHeader('WWW-Authenticate', 'Basic realm="staging server"');
 		return res.status(401).send('Nicht autorisiert');
 	}
+	console.log(auth);
 	const [username, password] = Buffer.from(auth.split(' ')[1], 'base64')
 		.toString('ascii')
 		.split(':');
