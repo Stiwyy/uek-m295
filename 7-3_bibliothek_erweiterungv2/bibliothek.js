@@ -1,10 +1,17 @@
 import express from 'express';
 import { randomUUID } from 'node:crypto';
+import session from 'express-session';
 const app = express();
 
+app.use(
+	session({
+		secret: '0450345d4f5a6b7c8d9e0f1g2h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z',
+		resave: false,
+		saveUninitialized: true,
+	})
+);
 app.use(express.json());
 
-let auth = false;
 const email = 'desk@library.example';
 const password = 'm295';
 
@@ -139,14 +146,14 @@ let lends = [
 ];
 
 app.get('/lends', (req, res) => {
-	if (!auth) {
+	if (!req.session.authenticated) {
 		return res.status(401).send('Unauthorized');
 	}
 	res.json(lends);
 });
 
 app.get('/lends/:id', (req, res) => {
-	if (!auth) {
+	if (!req.session.authenticated) {
 		return res.status(401).send('Unauthorized');
 	}
 	const lend = lends.find((l) => l.id === req.params.id);
@@ -157,7 +164,7 @@ app.get('/lends/:id', (req, res) => {
 });
 
 app.post('/lends', (req, res) => {
-	if (!auth) {
+	if (!req.session.authenticated) {
 		return res.status(401).send('Unauthorized');
 	}
 	if (!req.body.customer_id || !req.body.isbn || !req.body.borrowed_at) {
@@ -203,7 +210,7 @@ app.post('/lends', (req, res) => {
 });
 
 app.delete('/lends/:id', (req, res) => {
-	if (!auth) {
+	if (!req.session.authenticated) {
 		return res.status(401).send('Unauthorized');
 	}
 	const lend = lends.find((l) => l.id === req.params.id);
@@ -224,15 +231,15 @@ app.post('/login', (req, res) => {
 	}
 
 	if (req.body.email === email && req.body.password === password) {
-		auth = true;
+		req.session.authenticated = true;
 		return res.sendStatus(201);
 	}
-	auth = false;
+	req.session.authenticated = false;
 	return res.status(401).send('Invalid credentials');
 });
 
 app.get('/verify', (req, res) => {
-	if (auth) {
+	if (req.session.authenticated) {
 		res.body = {
 			email: email,
 			password: password,
@@ -243,6 +250,10 @@ app.get('/verify', (req, res) => {
 });
 
 app.delete('/logout', (req, res) => {
-	auth = false;
+	req.session.destroy((err) => {
+		if (err) {
+			return res.status(500).send('Could not log out');
+		}
+	});
 	res.sendStatus(204);
 });
