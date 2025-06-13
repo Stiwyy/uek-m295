@@ -136,10 +136,16 @@ let lends = [
 ];
 
 app.get('/lends', (req, res) => {
+	if (!auth) {
+		return res.status(401).send('Unauthorized');
+	}
 	res.json(lends);
 });
 
 app.get('/lends/:id', (req, res) => {
+	if (!auth) {
+		return res.status(401).send('Unauthorized');
+	}
 	const lend = lends.find((l) => l.id === req.params.id);
 	if (!lend) {
 		return res.status(404).send('Lend not found');
@@ -148,6 +154,9 @@ app.get('/lends/:id', (req, res) => {
 });
 
 app.post('/lends', (req, res) => {
+	if (!auth) {
+		return res.status(401).send('Unauthorized');
+	}
 	if (!req.body.customer_id || !req.body.isbn || !req.body.borrowed_at) {
 		return res
 			.status(422)
@@ -191,6 +200,9 @@ app.post('/lends', (req, res) => {
 });
 
 app.delete('/lends/:id', (req, res) => {
+	if (!auth) {
+		return res.status(401).send('Unauthorized');
+	}
 	const lend = lends.find((l) => l.id === req.params.id);
 	if (!lend) {
 		return res.status(404).send('Lend not found');
