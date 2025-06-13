@@ -5,6 +5,9 @@ const app = express();
 app.use(express.json());
 
 let auth = false;
+const email = 'desk@library.example';
+const password = 'm295';
+
 let books = [
 	{
 		title: 'The Great Gatsby',
@@ -220,13 +223,21 @@ app.post('/login', (req, res) => {
 		return res.status(422).send('Username and password are required');
 	}
 
-	if (
-		req.body.email === 'desk@library.example' &&
-		req.body.password === 'm295'
-	) {
+	if (req.body.email === email && req.body.password === password) {
 		auth = true;
 		return res.sendStatus(201);
 	}
 	auth = false;
 	return res.status(401).send('Invalid credentials');
+});
+
+app.get('/verify', (req, res) => {
+	if (auth) {
+		res.body = {
+			email: email,
+			password: password,
+		};
+		return res.sendStatus(200);
+	}
+	return res.status(401).send('Unauthorized');
 });
